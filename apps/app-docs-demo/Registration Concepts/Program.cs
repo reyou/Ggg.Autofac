@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using System;
 using System.IO;
 
@@ -21,8 +22,203 @@ namespace Registration_Concepts
             RegisteringSingleton();
             LambdaExpressionComponents();
             ComplexParameters();
+            PropertyInjection();
+            SelectionofanImplementation();
+            OpenGenericComponents();
+            ComponentWithAnyNumberOfServices();
+            AsSelfSample();
+            DefaultRegistrations();
+            ConditionalRegistration.RunMain();
+            ConditionalRegistration.RunMain2();
+            ConditionalRegistration.RunMain3();
+            ReflectionComponentRegistration();
+            ParameterswithLambdaExpression();
+            PropertyandMethodInjection.PropertyInjection();
+            PropertyandMethodInjection.PropertyInjectionCirDep();
             Console.WriteLine("\nMain method reach to end. Press a key to continue...");
             Console.ReadLine();
+        }
+
+        private static void ParameterswithLambdaExpression()
+        {
+            Console.WriteLine("\nParameterswithLambdaExpression:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            // Use TWO parameters to the registration delegate:
+            // c = The current IComponentContext to dynamically resolve dependencies
+            // p = An IEnumerable<Parameter> with the incoming parameter set
+            builder.Register((c, p) => new ConfigReader2(p.Named<string>("configSectionName"))).As<IConfigReader>();
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                IConfigReader configReader = lifetimeScope.Resolve<IConfigReader>(new NamedParameter("configSectionName", "ASection"));
+                Console.WriteLine("configReader.GetType(): " + configReader.GetType());
+            }
+
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/parameters.html
+        /// </summary>
+        private static void ReflectionComponentRegistration()
+        {
+            Console.WriteLine("\nReflectionComponentRegistration:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            // Using a NAMED parameter:
+            builder.RegisterType<ConfigReader>()
+                .As<IConfigReader>()
+                .WithParameter("configSectionName", "sectionName");
+
+            // Using a TYPED parameter:
+            builder.RegisterType<ConfigReader>()
+                .As<IConfigReader>()
+                .WithParameter(new TypedParameter(typeof(string), "sectionName"));
+
+            // Using a RESOLVED parameter:
+            builder.RegisterType<ConfigReader>()
+                .As<IConfigReader>()
+                .WithParameter(
+                    new ResolvedParameter(
+                        (pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "configSectionName",
+                        (pi, ctx) => "sectionName"));
+
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                IConfigReader configReader = lifetimeScope.Resolve<IConfigReader>(new NamedParameter("sectionName", "ASection"));
+                Console.WriteLine("configReader.GetType(): " + configReader.GetType());
+
+            }
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#default-registrations
+        /// If more than one component exposes the same service, Autofac will use
+        /// the last registered component as the default provider of that service:
+        /// </summary>
+        private static void DefaultRegistrations()
+        {
+            Console.WriteLine("\nDefaultRegistrations:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<ConsoleLogger>().As<ILogger>();
+            builder.RegisterType<FileLogger>().As<ILogger>();
+            // To override this behavior, use the PreserveExistingDefaults() modifier:
+            builder.RegisterType<FallbackLogger>().As<ILogger>().PreserveExistingDefaults();
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                ILogger logger = lifetimeScope.Resolve<ILogger>();
+                Console.WriteLine("logger.GetType(): " + logger.GetType());
+
+            }
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#services-vs-components
+        /// If you want to expose a component as a set of services as well as
+        /// using the default service, use the AsSelf method:
+        /// </summary>
+        private static void AsSelfSample()
+        {
+            Console.WriteLine("\nAsSelfSample:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<CallLogger>()
+                .AsSelf()
+                .As<ILogger>()
+                .As<ICallInterceptor>();
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                ILogger logger = lifetimeScope.Resolve<ILogger>();
+                Console.WriteLine("ILogger resolved");
+                ICallInterceptor icaCallInterceptor = lifetimeScope.Resolve<ICallInterceptor>();
+                Console.WriteLine("ICallInterceptor resolved");
+                CallLogger callLogger = lifetimeScope.Resolve<CallLogger>();
+                Console.WriteLine("CallLogger resolved");
+            }
+
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#services-vs-components
+        /// </summary>
+        private static void ComponentWithAnyNumberOfServices()
+        {
+            Console.WriteLine("\nComponentWithAnyNumberOfServices:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<CallLogger>()
+                .As<ILogger>()
+                .As<ICallInterceptor>();
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                ILogger logger = lifetimeScope.Resolve<ILogger>();
+                Console.WriteLine("ILogger resolved");
+                ICallInterceptor icaCallInterceptor = lifetimeScope.Resolve<ICallInterceptor>();
+                Console.WriteLine("ICallInterceptor resolved");
+            }
+
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#open-generic-components
+        /// Autofac supports open generic types. Use the RegisterGeneric() builder method
+        /// </summary>
+        private static void OpenGenericComponents()
+        {
+            /*builder.RegisterGeneric(typeof(NHibernateRepository<>))
+       .As(typeof(IRepository<>))
+       .InstancePerLifetimeScope();*/
+            /*// Autofac will return an NHibernateRepository<Task>
+            var tasks = container.Resolve<IRepository<Task>>();
+            */
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#register-by-type
+        /// A cleaner, type-safe syntax can be achieved if a delegate to create
+        /// CreditCard instances is declared and a delegate factory is used.
+        /// </summary>
+        private static void SelectionofanImplementation()
+        {
+            Console.WriteLine("\nSelectionofanImplementation:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.Register<CreditCard>(
+                (c, p) =>
+                {
+                    string accountId = p.Named<string>("accountId");
+                    if (accountId.StartsWith("9"))
+                    {
+                        return new GoldCard(accountId);
+                    }
+                    return new StandardCard(accountId);
+                });
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                CreditCard card = container.Resolve<CreditCard>(new NamedParameter("accountId", "12345"));
+                Console.WriteLine("CreditCard resolved");
+
+            }
+        }
+
+        /// <summary>
+        /// http://autofac.readthedocs.io/en/latest/register/registration.html#property-injection
+        /// http://autofac.readthedocs.io/en/latest/register/prop-method-injection.html
+        /// Property injection is not recommended in the majority of cases.
+        /// Alternatives like the Null Object pattern, overloaded constructors or
+        /// constructor parameter default values make it possible to create cleaner,
+        /// “immutable” components with optional dependencies using constructor injection.
+        /// </summary>
+        private static void PropertyInjection()
+        {
+            Console.WriteLine("\nPropertyInjection:\n");
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.Register(c => new A { MyB = c.ResolveOptional<B>() });
+            IContainer container = builder.Build();
+            using (ILifetimeScope lifetimeScope = container.BeginLifetimeScope())
+            {
+                A userSession = lifetimeScope.Resolve<A>();
+            }
         }
 
         /// <summary>
