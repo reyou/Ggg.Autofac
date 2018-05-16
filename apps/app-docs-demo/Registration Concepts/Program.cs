@@ -35,6 +35,12 @@ namespace Registration_Concepts
             ParameterswithLambdaExpression();
             PropertyandMethodInjection.PropertyInjection();
             PropertyandMethodInjection.PropertyInjectionCirDep();
+            PropertyandMethodInjection.PropertyReflectionComponent();
+            PropertyandMethodInjection.PropertyAndValueToWireUp();
+            PropertyandMethodInjection.MethodInjection();
+            PropertyandMethodInjection.ActivatingEventHandler();
+            AssemblyScanning.ScanningForTypes();
+            AssemblyScanning.FilteringTypes();
             Console.WriteLine("\nMain method reach to end. Press a key to continue...");
             Console.ReadLine();
         }

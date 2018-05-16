@@ -16,5 +16,6 @@ namespace Registration_Concepts
 
         public B MyB { get; set; }
         public B B { get; set; }
+        public int PropertyName { get; set; }
     }
 }
