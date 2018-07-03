@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\..\..\..\Users\aozdemir\.nuget\packages\autofac\4.8.1\lib\netstandard1.1\Autofac.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Autofac" Version="4.8.1" />
   </ItemGroup>
 
 </Project>
