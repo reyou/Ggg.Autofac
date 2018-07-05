@@ -1,16 +1,20 @@
 ﻿using Autofac;
 using Autofac.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Registration_Concepts;
 using System;
 using System.IO;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts
 {
     /// <summary>
     /// http://autofac.readthedocs.io/en/latest/register/registration.html
     /// You register components with Autofac by creating a ContainerBuilder
     /// and informing the builder which components expose which services.
     /// </summary>
-    class Program
+
+    [TestClass]
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -61,6 +65,13 @@ namespace Registration_Concepts
             }
 
         }
+
+        [TestMethod]
+        public void ParameterswithLambdaExpressionTest()
+        {
+            ParameterswithLambdaExpression();
+        }
+
 
         /// <summary>
         /// http://autofac.readthedocs.io/en/latest/register/parameters.html
@@ -365,4 +376,6 @@ namespace Registration_Concepts
             }
         }
     }
+
+
 }

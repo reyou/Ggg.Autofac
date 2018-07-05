@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts
 {
     /// <summary>
     /// http://autofac.readthedocs.io/en/latest/register/scanning.html
