@@ -1,6 +1,7 @@
-﻿using System;
+﻿using RegistrationConcepts.Interfaces;
+using System;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts.Types
 {
     public class MyComponent
     {

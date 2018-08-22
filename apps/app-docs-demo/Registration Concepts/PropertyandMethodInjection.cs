@@ -1,7 +1,8 @@
 ﻿using Autofac;
+using RegistrationConcepts.Types;
 using System;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts
 {
     /// <summary>
     /// http://autofac.readthedocs.io/en/latest/register/prop-method-injection.html

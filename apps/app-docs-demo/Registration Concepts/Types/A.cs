@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts.Types
 {
     internal class A
     {

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DemoApp.Types;
 using System;
 
 namespace DemoApp
@@ -23,7 +24,20 @@ namespace DemoApp
             Console.WriteLine("Main method reach to end. Press a key to continue...");
             Console.ReadLine();
         }
+        private static void CreateBuilder()
+        {
+            // Create your builder.
+            ContainerBuilder builder = new ContainerBuilder();
 
+            // Usually you're only interested in exposing the type
+            // via its interface:
+            builder.RegisterType<SomeType>().As<IService>();
+
+            // However, if you want BOTH services (not as common)
+            // you can say so:
+            builder.RegisterType<SomeType>().AsSelf().As<IService>();
+
+        }
         private static void CreateBuilder2()
         {
             ContainerBuilder builder = new ContainerBuilder();
@@ -49,19 +63,6 @@ namespace DemoApp
             }
         }
 
-        private static void CreateBuilder()
-        {
-            // Create your builder.
-            ContainerBuilder builder = new ContainerBuilder();
 
-            // Usually you're only interested in exposing the type
-            // via its interface:
-            builder.RegisterType<SomeType>().As<IService>();
-
-            // However, if you want BOTH services (not as common)
-            // you can say so:
-            builder.RegisterType<SomeType>().AsSelf().As<IService>();
-
-        }
     }
 }

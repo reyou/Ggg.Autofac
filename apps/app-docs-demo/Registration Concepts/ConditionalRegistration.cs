@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using Autofac.Core;
+using RegistrationConcepts.Interfaces;
+using RegistrationConcepts.Types;
 using System;
 
-namespace Registration_Concepts
+namespace RegistrationConcepts
 {
     /// <summary>
     /// http://autofac.readthedocs.io/en/latest/register/registration.html#conditional-registration

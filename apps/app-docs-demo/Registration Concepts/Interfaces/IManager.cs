@@ -1,4 +1,4 @@
-﻿namespace Registration_Concepts
+﻿namespace RegistrationConcepts.Interfaces
 {
     internal interface IManager
     {

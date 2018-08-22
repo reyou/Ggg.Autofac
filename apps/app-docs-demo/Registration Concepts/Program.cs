@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Registration_Concepts;
+using RegistrationConcepts.Interfaces;
+using RegistrationConcepts.Types;
 using System;
 using System.IO;
 
