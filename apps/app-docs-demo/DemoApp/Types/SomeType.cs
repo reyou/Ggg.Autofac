@@ -1,4 +1,6 @@
-﻿namespace DemoApp.Types
+﻿using DemoApp.Interfaces;
+
+namespace DemoApp.Types
 {
     internal class SomeType : IService
     {

@@ -1,4 +1,4 @@
-﻿namespace DemoApp
+﻿namespace DemoApp.Interfaces
 {
     // This interface helps decouple the concept of
     // "writing output" from the Console class. We

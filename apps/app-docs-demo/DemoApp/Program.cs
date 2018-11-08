@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DemoApp.Interfaces;
 using DemoApp.Types;
 using System;
 
@@ -20,13 +21,12 @@ namespace DemoApp
         static void Main(string[] args)
         {
             CreateBuilder();
-            CreateBuilder2();
             Console.WriteLine("Main method reach to end. Press a key to continue...");
             Console.ReadLine();
         }
+
         private static void CreateBuilder()
         {
-            // Create your builder.
             ContainerBuilder builder = new ContainerBuilder();
 
             // Usually you're only interested in exposing the type
@@ -37,10 +37,6 @@ namespace DemoApp
             // you can say so:
             builder.RegisterType<SomeType>().AsSelf().As<IService>();
 
-        }
-        private static void CreateBuilder2()
-        {
-            ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterType<ConsoleOutput>().As<IOutput>();
             builder.RegisterType<TodayWriter>().As<IDateWriter>();
             Container = builder.Build();

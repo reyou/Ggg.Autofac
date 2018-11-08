@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DemoApp.Interfaces;
+using System;
 
-namespace DemoApp
+namespace DemoApp.Types
 {
     // This TodayWriter is where it all comes together.
     // Notice it takes a constructor parameter of type

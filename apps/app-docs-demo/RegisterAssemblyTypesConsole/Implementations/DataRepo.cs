@@ -1,6 +1,7 @@
-﻿using System;
+﻿using RegisterAssemblyTypesConsole.Interfaces;
+using System;
 
-namespace RegisterAssemblyTypesConsole.Interfaces
+namespace RegisterAssemblyTypesConsole.Implementations
 {
     class DataRepo : IDataRepo
     {

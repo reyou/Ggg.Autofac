@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DemoApp.Interfaces;
+using System;
 
-namespace DemoApp
+namespace DemoApp.Types
 {
 
     // This implementation of the IOutput interface
