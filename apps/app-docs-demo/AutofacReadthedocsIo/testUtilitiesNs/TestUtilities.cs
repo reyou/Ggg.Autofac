@@ -19,5 +19,12 @@ namespace AutofacReadthedocsIo.testUtilitiesNs
             }
             Console.WriteLine(message);
         }
+
+        internal static void Attach(object logObject)
+        {
+            WriteLine(logObject);
+            if (Debugger.IsAttached)
+                Debugger.Break();
+        }
     }
 }
