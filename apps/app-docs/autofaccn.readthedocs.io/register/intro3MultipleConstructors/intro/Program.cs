@@ -1,0 +1,28 @@
+﻿using System;
+using System.IO;
+using Autofac;
+
+namespace intro
+{
+    class Program
+    {
+        private static IContainer Container { get; set; }
+
+        static void Main(string[] args)
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<MyComponent>();
+            builder.RegisterType<ConsoleLogger>().As<ILogger>();
+            IContainer container = builder.Build();
+
+            using (ILifetimeScope scope = container.BeginLifetimeScope())
+            {
+                MyComponent component = scope.Resolve<MyComponent>();
+            }
+            Console.WriteLine("program finished.");
+            Console.ReadLine();
+        }
+
+
+    }
+}
