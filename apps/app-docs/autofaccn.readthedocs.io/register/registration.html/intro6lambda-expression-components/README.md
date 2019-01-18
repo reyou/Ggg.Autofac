@@ -1,0 +1,2 @@
+- Title: Registration Concepts — Autofac 4.0 documentation
+  - Url: https://autofaccn.readthedocs.io/en/latest/register/registration.html#registration-concepts
